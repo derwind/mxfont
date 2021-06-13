@@ -5,8 +5,29 @@ MIT license
 """
 
 from fontTools.ttLib import TTFont
+from fontTools.pens.basePen import BasePen
 from PIL import Image, ImageFont, ImageDraw
 import numpy as np
+
+
+class StopDraw(Exception):
+    pass
+
+class SpaceOrNotPen(BasePen):
+    def __init__(self, glyphSet=None):
+        super().__init__(glyphSet)
+        self.is_space = True
+
+    def _moveTo(self, pt):
+        pass
+
+    def _lineTo(self, pt):
+        self.is_space = False
+        raise StopDraw
+
+    def _curveToOne(self, pt1, pt2, pt3):
+        self.is_space = False
+        raise StopDraw
 
 
 def get_defined_chars(fontfile):
@@ -15,14 +36,34 @@ def get_defined_chars(fontfile):
     return chars
 
 
+def is_space_char(char, ttFont):
+    cmap = ttFont.getBestCmap()
+    gs = ttFont.getGlyphSet()
+
+    uni = ord(char)
+    gname = cmap[uni]
+    g = gs[gname]
+    pen = SpaceOrNotPen(gs)
+    try:
+        g.draw(pen)
+    except StopDraw:
+        pass
+    return pen.is_space
+
 def get_filtered_chars(fontpath):
-    ttf = read_font(fontpath)
+    # ttf = read_font(fontpath)
     defined_chars = get_defined_chars(fontpath)
     avail_chars = []
 
+    ttFont = TTFont(fontpath)
+
     for char in defined_chars:
-        img = np.array(render(ttf, char))
-        if img.mean() == 255.:
+        # img = np.array(render(ttf, char))
+        # if img.mean() == 255.:
+        #     pass
+
+        is_space = is_space_char(char, ttFont)
+        if is_space:
             pass
         else:
             avail_chars.append(char.encode('utf-16', 'surrogatepass').decode('utf-16'))
