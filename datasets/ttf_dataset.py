@@ -206,7 +206,7 @@ def sample(population, k):
 
 
 def load_data_list(data_dir, char_filter=None):
-    font_paths = sorted(Path(data_dir).glob("*.ttf"))
+    font_paths = sorted(Path(data_dir).glob("*.*tf"))
 
     key_font_dict = {}
     key_char_dict = {}
@@ -215,8 +215,12 @@ def load_data_list(data_dir, char_filter=None):
         font = read_font(font_path)
         key_font_dict[font_path.stem] = font
 
-        with open(str(font_path).replace(".ttf", ".txt")) as f:
-            chars = f.read()
+        if str(font_path).endswith(".ttf"):
+            with open(str(font_path).replace(".ttf", ".txt")) as f:
+                chars = f.read()
+        elif str(font_path).endswith(".otf"):
+            with open(str(font_path).replace(".otf", ".txt")) as f:
+                chars = f.read()
 
         if char_filter is not None:
             chars = set(chars).intersection(char_filter)

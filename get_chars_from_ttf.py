@@ -17,7 +17,7 @@ def main():
     args = parser.parse_args()
 
     print(args.root_dir)
-    ttffiles = list(Path(args.root_dir).rglob("*.ttf"))
+    ttffiles = list(Path(args.root_dir).rglob("*.*tf"))
 
     for ttffile in tqdm(ttffiles):
         filename = ttffile.stem
