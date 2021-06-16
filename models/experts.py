@@ -33,6 +33,13 @@ class SingleExpert(nn.Module):
 
 
 class Experts(nn.Module):
+    """multiple Experts
+
+    Args:
+        out_shape (int): (C*8, 16, 16)
+        experts (list): list of SingleExperts
+    """
+
     def __init__(self, out_shape, experts, skip_shape=None):
         super(Experts, self).__init__()
         self.out_shape = out_shape

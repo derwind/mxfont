@@ -14,6 +14,18 @@ import utils
 
 
 class Generator(nn.Module):
+    """ Generator
+
+    Args:
+        C_in (int): input channel num for StyleEncoder. Typically one (grayscale).
+        C (int): unit channel of conv layer of StyleEncoder and Decoder.  Typically 32.
+        C_out (int): output channel num for StyleEncoder and Decoder. Typically one (grayscale).
+        style_enc (dict): parameters for StyleEncoder, e.g. norm, activ
+        experts (dict): parameters for Experts, e.g. n_experts, norm, activ
+        emb_num (int): Typically two.
+        dec (dict): parameters for Decoder, e.g. norm, activ
+    """
+
     def __init__(self, C_in, C, C_out, style_enc, experts, emb_num, dec):
         super().__init__()
         self.style_enc = style_enc_builder(
@@ -28,6 +40,7 @@ class Generator(nn.Module):
 
         self.emb_num = emb_num
         for _key in self.feat_shape:
+            # channel num of feature
             _feat_C = self.feat_shape[_key][0]
             self.fact_blocks[_key] = nn.ModuleList([nn.Conv2d(_feat_C, emb_num*_feat_C, 1, 1)
                                                     for _ in range(self.n_experts)])
@@ -48,6 +61,8 @@ class Generator(nn.Module):
         return feats
 
     def factorize(self, feats, emb_dim=0):
+        """factorize features to factors"""
+
         if self.emb_num is None:
             raise ValueError("embedding blocks are not defined.")
 
@@ -64,6 +79,8 @@ class Generator(nn.Module):
         return factors
 
     def defactorize(self, fact_list):
+        """defactorize features from factors"""
+
         feats = {}
         for _key in self.fact_blocks:
             _shape = self.feat_shape[_key]
@@ -80,6 +97,16 @@ class Generator(nn.Module):
         return out
 
     def gen_from_style_char(self, style_imgs, char_imgs):
+        """generate images from style images and character images
+
+        Args:
+            style_imgs: reference font images
+            char_images: source font images
+
+        Returns:
+            generated images
+        """
+
         B = len(style_imgs)
         style_facts = self.factorize(self.encode(style_imgs.flatten(0, 1)), 0)
         char_facts = self.factorize(self.encode(char_imgs.flatten(0, 1)), 1)

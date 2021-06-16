@@ -112,7 +112,9 @@ def train(args, cfg, ddp_gpu=-1):
 
     trn_transform, val_transform = setup_transforms(cfg)
 
+    # characters without sub-glyphs, so they are 'atomic components'
     primals = json.load(open(cfg.primals))
+    # character -> its sub-glyphs (components)
     decomposition = json.load(open(cfg.decomposition))
     n_comps = len(primals)
 
