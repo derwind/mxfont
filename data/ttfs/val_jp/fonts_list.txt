@@ -1,0 +1,8 @@
+DotGothic16-Regular.ttf
+HaranoAjiGothic-Bold.otf
+HaranoAjiGothic-Regular.otf
+HaranoAjiMincho-Bold.otf
+HaranoAjiMincho-Regular.otf
+KleeOne-SemiBold.ttf
+ShipporiAntiqueB1-Regular.ttf
+ShipporiMinchoB1-Regular.ttf

@@ -1,0 +1,17 @@
+DelaGothicOne-Regular.ttf
+HachiMaruPop-Regular.ttf
+KiwiMaru-Light.ttf
+KiwiMaru-Regular.ttf
+KleeOne-Regular.ttf
+Kosugi-Regular.ttf
+KosugiMaru-Regular.ttf
+NewTegomin-Regular.ttf
+PottaOne-Regular.ttf
+ReggaeOne-Regular.ttf
+RocknRollOne-Regular.ttf
+ShipporiAntique-Regular.ttf
+ShipporiMincho-Bold.ttf
+ShipporiMincho-Regular.ttf
+ShipporiMinchoB1-Bold.ttf
+Stick-Regular.ttf
+YuseiMagic-Regular.ttf
